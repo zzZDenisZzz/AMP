@@ -1,5 +1,7 @@
 package com.kiev.corey.androidmediaplayer;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -16,25 +18,28 @@ import static android.os.Environment.DIRECTORY_MOVIES;
 
 public class MainActivity extends AppCompatActivity {
 
+    ListView lvMain;
+    File directory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // находим список
-        final ListView lvMain = findViewById(R.id.lvMain);
+        lvMain = findViewById(R.id.lvMain);
 
         //находим директорию папки видео и добавляем название видео в ArrayList
-        File directory = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES);
+        directory = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES);
 
         ArrayList<String> alPath = new ArrayList<>();
         ArrayList<String> alName = new ArrayList<>();
 
         File[] file = directory.listFiles();
-        for (int i = 0; i < file.length; i++) {
+        for (File aFile : file) {
 
-            alName.add(file[i].getName());
-            alPath.add(file[i].getAbsolutePath());
+            alName.add(aFile.getName());
+            alPath.add(aFile.getAbsolutePath());
 
             // создаем адаптер присваиваем адаптер списку
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>
@@ -48,7 +53,12 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String value = (String) lvMain.getItemAtPosition(position);
-                Toast.makeText(MainActivity.this, "VideoView OPEN!!!!!PLS", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(MainActivity.this, SelectedVideo.class);
+                intent.putExtra("value", value);
+//                intent.putExtra("directory", directory);
+                startActivity(intent);
+
             }
         });
     }
