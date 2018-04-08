@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_play">Play</string>
+    <string name="playBtn">Play</string>
+    <string name="nextBtn">Next</string>
+    <string name="backBtn">Back</string>
+    <string name="stopBtn">Stop</string>
     <string name="app">AMP</string>
 </resources>
