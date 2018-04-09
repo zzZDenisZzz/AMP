@@ -20,7 +20,7 @@ import static android.os.Environment.DIRECTORY_MOVIES;
 public class SelectedVideo extends AppCompatActivity {
 
     VideoView videoView;
-    Button back, stop, play, next;
+    Button stop, play;
     String itemValue;
     File directory;
     MediaController mediaController;
@@ -31,11 +31,8 @@ public class SelectedVideo extends AppCompatActivity {
         setContentView(R.layout.play_layout);
 
         videoView = findViewById(R.id.video_View);
-        play = findViewById(R.id.btn_play);
         stop = findViewById(R.id.btn_stop);
         play = findViewById(R.id.btn_play);
-        play = findViewById(R.id.btn_play);
-
 
         Bundle bundle = getIntent().getExtras();
 
@@ -47,10 +44,23 @@ public class SelectedVideo extends AppCompatActivity {
         mediaController = new MediaController(this);
         videoView.setMediaController(mediaController);
 
+        mediaController.setPrevNextListeners(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO next button clicked
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        mediaController.show(10000);
+
 
         stop.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                videoView.pause();
+                videoView.stopPlayback();
             }
         });
 
@@ -61,18 +71,8 @@ public class SelectedVideo extends AppCompatActivity {
                 videoView.start();
             }
         });
-
-
-//        play.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Uri uri = Uri.parse(directory+"/" + itemValue);
-//                videoView.setVideoURI(uri);
-//                videoView.setMediaController(mediaController);
-//                videoView.start();
-//            }
-//        });
-
     }
+
 
     // Изменение конфигурации для "ORIENTATION LANDSCAPE"
     LinearLayout.LayoutParams paramsNotFullscreen; // если использую LinearLayout
